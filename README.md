@@ -7,7 +7,7 @@ This project is a **cloud-native, full-stack application** designed for **high a
 ## ✨ Key Features
 
 ✅ **Cloud-Native & Scalable Architecture** – Deployed on **AWS EKS** using **Kubernetes**  
-✅ **Automated Infrastructure Setup** – Terraform for provisioning **AWS VPC, EKS, and EC2 instances**  
+✅ **Automated Infrastructure Setup** – Terraform for provisioning **AWS VPC and EKS**  
 ✅ **Configuration Management** – Ansible for **EC2 setup (Jenkins, SonarQube, Nexus, Prometheus, Grafana)**  
 ✅ **GitOps-Based CI/CD** – Jenkins for **continuous integration** and ArgoCD for **continuous deployment**  
 ✅ **Database Administration** – **MongoDB Sharded Cluster** with **Percona Backup (AWS S3 Storage)**  
@@ -52,15 +52,23 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 - **Jenkins Pipeline:**
   - **Build & Test the Backend** (Node.js & Express.js)
   - **Run SonarQube Code Analysis** & **Trivy Security Scan**
-  - **Push Docker Images to Nexus Repository**
+  - **Build Docker Image** for the backend application.
+  - **Automate Docker Tag Update** in the GitOps repository to ensure proper version control.
+  - **Push Docker Images to Nexus Repository** for artifact storage and versioning.
+  - **Send Email Notifications** on pipeline status (success/failure) including detailed logs and reports.
 - **ArgoCD Automates Deployment** into AWS EKS.
 - **Canary Deployment Strategy** ensures a **smooth rollout with zero downtime**.
 
 ### **5️⃣ Frontend Deployment (CI/CD & GitOps)**
 
 - **Jenkins Pipeline:**
-  - **Build & Test the Frontend** (React.js)
-  - **Integrate with SonarQube for Code Quality Checks**
+
+  - **Build & Test the Backend** (Node.js & Express.js)
+  - **Run SonarQube Code Analysis** & **Trivy Security Scan**
+  - **Build Docker Image** for the backend application.
+  - **Automate Docker Tag Update** in the GitOps repository to ensure proper version control.
+  - **Push Docker Images to Nexus Repository** for artifact storage and versioning.
+  - **Send Email Notifications** on pipeline status (success/failure) including detailed logs and reports.
 - **ArgoCD Automates Deployment** into AWS EKS.
 - **Blue-Green Deployment Strategy** ensures **seamless UI rollouts**.
 
@@ -77,16 +85,16 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 
 ---
 
-| **Category**               | **Technologies Used**                                        |
-|----------------------------|--------------------------------------------------------------|
-| **Frontend Development**   | React.js, React Router, Axios                                |
-| **Backend Development**    | Node.js, Express.js, MongoDB                                 |
-| **Infrastructure as Code** | Terraform (AWS EKS, VPC, EC2)                                |
-| **Configuration Management** | Ansible (EC2, Jenkins, SonarQube, Nexus, Monitoring Tools) |
-| **CI/CD & GitOps**         | Jenkins, ArgoCD, SonarQube, Nexus Repository, Trivy          |
-| **Containerization & Orchestration** | Docker, Kubernetes (AWS EKS)                       |
-| **Monitoring & Logging**   | Prometheus, Grafana, AWS CloudWatch, Fluentd                 |
-| **Security & Backup**      | Trivy (Security Scanning), Percona Backup (MongoDB to S3)    |
+| **Category**                         | **Technologies Used**                                      |
+| ------------------------------------ | ---------------------------------------------------------- |
+| **Frontend Development**             | React.js, React Router, Axios                              |
+| **Backend Development**              | Node.js, Express.js, MongoDB                               |
+| **Infrastructure as Code**           | Terraform (AWS EKS, VPC, EC2)                              |
+| **Configuration Management**         | Ansible (EC2, Jenkins, SonarQube, Nexus, Monitoring Tools) |
+| **CI/CD & GitOps**                   | Jenkins, ArgoCD, SonarQube, Nexus Repository, Trivy        |
+| **Containerization & Orchestration** | Docker, Kubernetes (AWS EKS)                               |
+| **Monitoring & Logging**             | Prometheus, Grafana, AWS CloudWatch, Fluentd               |
+| **Security & Backup**                | Trivy (Security Scanning), Percona Backup (MongoDB to S3)  |
 
 ---
 
