@@ -35,4 +35,10 @@
         register: ec2
       loop: "{{ instance_names }}"
 
+    - set_fact:
+        private_ip: "{{ ec2.instances | map(attribute='private_ip_address') | list }}"
 
+    - debug: private_ip
+    - template:
+        src: ../template/inventory.j2
+        dest: ./inventory.ini
