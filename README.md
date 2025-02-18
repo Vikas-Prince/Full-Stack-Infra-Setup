@@ -77,8 +77,6 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 
 ---
 
-## 🛠️ **Tech Stack & Tools**  
---------------------------------------------------------------------------------------------
 | **Category**               | **Technologies Used**                                        |
 |----------------------------|--------------------------------------------------------------|
 | **Frontend Development**   | React.js, React Router, Axios                                |
@@ -89,7 +87,7 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 | **Containerization & Orchestration** | Docker, Kubernetes (AWS EKS)                       |
 | **Monitoring & Logging**   | Prometheus, Grafana, AWS CloudWatch, Fluentd                 |
 | **Security & Backup**      | Trivy (Security Scanning), Percona Backup (MongoDB to S3)    |
----------------------------------------------------------------------------------------------
+
 ---
 
 ## 📌 **Repository Structure & Links**
