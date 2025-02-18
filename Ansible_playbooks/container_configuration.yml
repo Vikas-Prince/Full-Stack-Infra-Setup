@@ -1,0 +1,88 @@
+- name: "Configure Docker service on all Ec2 instances"
+  hosts: all
+  become: yes
+  tasks:
+    - name: "Installing docker package"
+      package:
+        name: docker
+        state: present
+
+    - name: "Start the docker daemon"
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+- name: "Deploying Jenkins on Docker container"
+  hosts: jenkins-server
+  become: yes
+  tasks:
+    - name: "Create Docker Volume"
+      docker_volume:
+        name: jenkins_home
+        state: present
+
+    - name: "Running Jenkins container"
+      docker_container:
+        name: jenkins-server
+        image: jenkins/jenkins:lts-jdk17
+        state: present
+        port:
+          - 8080:8080
+          - 50000:50000
+        detach: yes
+        restart_policy: on-failure
+        volumes:
+          - jenkins_home:/var/jenkins_home
+
+- name: "Deploying Sonar Server on Docker container"
+  hosts: sonar-server
+  become: yes
+  tasks:
+    - name: "Running Sonar server on Docker container"
+      docker_container:
+        name: sonar-server
+        image: sonarqube/community:lts
+        state: present
+        port:
+          - 8081:8081
+        detach: yes
+        restart_policy: on-failure
+
+- name: "Deploying Sonatype Nexus server on container"
+  hosts: nexus-server
+  become: yes
+  tasks:
+    - name: "Running Sonatype Nexus server on container"
+      docker_container:
+        name: nexus-server
+        image: sonatype/nexus3-latest
+        state: present
+        port:
+          - 9000:9000
+        detach: yes
+        restart_policy: on-failure
+
+- name: "Deploying Prometheus and Grafana on container"
+  hosts: monitoring-server
+  become: yes
+  tasks:
+    - name: "Running Prometheus on container"
+      docker_container:
+        name: prometheus-server
+        image: prom/prometheus
+        state: present
+        port:
+          - 9090:9090
+        detach: yes
+        restart_policy: on-failure
+
+    - name: "Running Grafana on container"
+      docker_container:
+        name: grafana
+        image: grafana/grafana
+        state: present
+        port:
+          - 3000:3000
+        detach: yes
+        restart_policy: on-failure
