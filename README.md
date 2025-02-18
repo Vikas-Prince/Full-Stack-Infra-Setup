@@ -87,13 +87,13 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 
 | **Category**                         | **Technologies Used**                                      |
 | ------------------------------------ | ---------------------------------------------------------- |
-| **Frontend Development**             | React.js, React Router, Axios                              |
+| **Frontend Development**             | HTML, CSS, React.js (React Routers, Hooks, Axios)                              |
 | **Backend Development**              | Node.js, Express.js, MongoDB                               |
 | **Infrastructure as Code**           | Terraform (AWS EKS, VPC, EC2)                              |
 | **Configuration Management**         | Ansible (EC2, Jenkins, SonarQube, Nexus, Monitoring Tools) |
 | **CI/CD & GitOps**                   | Jenkins, ArgoCD, SonarQube, Nexus Repository, Trivy        |
 | **Containerization & Orchestration** | Docker, Kubernetes (AWS EKS)                               |
-| **Monitoring & Logging**             | Prometheus, Grafana, AWS CloudWatch, Fluentd               |
+| **Monitoring & Logging**             | Prometheus and Grafana             |
 | **Security & Backup**                | Trivy (Security Scanning), Percona Backup (MongoDB to S3)  |
 
 ---
