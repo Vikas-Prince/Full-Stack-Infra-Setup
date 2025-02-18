@@ -1,0 +1,38 @@
+- hosts: local
+  vars_file:
+    - aws_creds.yml
+    - instance_vars.yml
+  vars:
+    instance_names:
+      - jenkins-server
+      - sonar-server
+      - nexus-server
+      - monitoring-server
+
+  tasks:
+    - name: "Install python3"
+      package:
+        name: python3-pip
+        state: present
+
+    - name: "Install Boto3"
+      pip:
+        name: boto3
+
+    - name: "Provisioning Ec2 instance"
+      community.aws.ec2_instance:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        region: "{{ region }}"
+        count: "{{ instance_names | length}}"
+        name: "{{ item }}"
+        instance_type: "{{ instance_type }}"
+        key_name: "{{ key }}"
+        security_group: default
+        network_interfaces:
+          - assign_public_ip: true
+        image_id: "{{ image_id }}"
+        register: ec2
+      loop: "{{ instance_names }}"
+
+
