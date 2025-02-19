@@ -65,14 +65,12 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 ### **5️⃣ Frontend Deployment (CI/CD & GitOps)**
 
 - **Jenkins Pipeline:**
-
   - **Build & Test the Backend** (Node.js & Express.js)
   - **Run SonarQube Code Analysis** & **Trivy Security Scan**
   - **Build Docker Image** for the backend application.
   - **Automate Docker Tag Update** in the GitOps repository to ensure proper version control.
   - **Push artifact to Nexus Repository** for artifact storage and versioning.
   - **Send Email Notifications** on pipeline status (success/failure) including detailed logs and reports.
-
 - **ArgoCD Automates Deployment** into AWS EKS.
 - **Blue-Green Deployment Strategy** ensures **seamless UI rollouts**.
 
@@ -80,7 +78,6 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 
 - **Prometheus collects real-time metrics** from Kubernetes, EC2, and MongoDB.
 - **Grafana provides dashboards** for monitoring performance.
-- **AWS CloudWatch & Fluentd handle centralized logging**.
 - **Trivy scans Docker images** for vulnerabilities.
 
 ---
