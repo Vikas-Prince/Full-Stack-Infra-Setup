@@ -4,16 +4,6 @@
 
 This project is a **cloud-native, full-stack application** designed for **high availability, scalability, and automated deployments**. It follows **modern DevOps practices, GitOps principles, and CI/CD automation** to enable seamless **infrastructure provisioning, deployment, and monitoring**. In addition to DevOps and cloud infrastructure, the project also showcases **full-stack development skills** with the use of **React.js for the frontend**, **Node.js for the backend**, and **MongoDB for the database**, demonstrating expertise in building, deploying, and maintaining scalable web applications.
 
-## ✨ Key Features
-
-✅ **Cloud-Native & Scalable Architecture** – Deployed on **AWS EKS** using **Kubernetes**  
-✅ **Automated Infrastructure Setup** – Terraform for provisioning **AWS VPC and EKS**  
-✅ **Configuration Management** – Ansible for **EC2 setup (Jenkins, SonarQube, Nexus, Prometheus, Grafana)**  
-✅ **GitOps-Based CI/CD** – Jenkins for **continuous integration** and ArgoCD for **continuous deployment**  
-✅ **Database Administration** – **MongoDB Sharded Cluster** with **Percona Backup (AWS S3 Storage)**  
-✅ **Deployment Strategies** – **Canary (Backend) & Blue-Green (Frontend) for Zero Downtime Deployments**  
-✅ **Observability & Security** – **Prometheus, Grafana, AWS CloudWatch, and Trivy (Container Security Scanning)**
-
 The architecture integrates:
 
 - **Full-Stack Development** → **React.js (Frontend), Node.js (Backend), and MongoDB (Database)**
@@ -26,16 +16,29 @@ This repository (**infra-setup**) serves as the **central hub** for infrastructu
 
 ---
 
+## ✨ Key Features
+
+✅ **Cloud-Native & Scalable Architecture** – Deployed on **AWS EKS** using **Kubernetes**  
+✅ **Automated Infrastructure Setup** – Terraform for provisioning **AWS VPC and EKS**  
+✅ **Configuration Management** – Ansible for **EC2 setup (Jenkins, SonarQube, Nexus, Prometheus, Grafana)**  
+✅ **GitOps-Based CI/CD** – Jenkins for **continuous integration** and ArgoCD for **continuous deployment**  
+✅ **Database Administration** – **MongoDB Sharded Cluster** with **Percona Backup (AWS S3 Storage)**  
+✅ **Deployment Strategies** – **Canary (Backend) & Blue-Green (Frontend) for Zero Downtime Deployments**  
+✅ **Observability & Security** – **Prometheus, Grafana, AWS CloudWatch, and Trivy (Container Security Scanning)**
+
+---
+
 ## 🏗️ **Production Workflow**
 
 This is the **end-to-end workflow** that powers the entire system, from **provisioning infrastructure** to **deploying applications in production**:
 
 ### **1️⃣ Infrastructure Provisioning (Terraform)**
 
-- **Provision AWS Cloud Resources** → Using Terraform to create **VPC, EKS Cluster, and EC2 Instances**.
+- **Provision AWS Cloud Resources** → Using Terraform to create **VPC and EKS Cluster**.
 
 ### **2️⃣ Configuration Management (Ansible)**
 
+- **Provision AWS EC2 instances** using ansible playbook and created Dynamic inventory using jinja2
 - **Install & Configure Core Tools** on EC2 Instances:
   - **Jenkins** → For CI/CD pipeline automation.
   - **SonarQube** → For static code analysis & quality checks.
@@ -54,7 +57,7 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
   - **Run SonarQube Code Analysis** & **Trivy Security Scan**
   - **Build Docker Image** for the backend application.
   - **Automate Docker Tag Update** in the GitOps repository to ensure proper version control.
-  - **Push Docker Images to Nexus Repository** for artifact storage and versioning.
+  - **Push artifact to Nexus Repository** for artifact storage and versioning.
   - **Send Email Notifications** on pipeline status (success/failure) including detailed logs and reports.
 - **ArgoCD Automates Deployment** into AWS EKS.
 - **Canary Deployment Strategy** ensures a **smooth rollout with zero downtime**.
@@ -67,8 +70,9 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
   - **Run SonarQube Code Analysis** & **Trivy Security Scan**
   - **Build Docker Image** for the backend application.
   - **Automate Docker Tag Update** in the GitOps repository to ensure proper version control.
-  - **Push Docker Images to Nexus Repository** for artifact storage and versioning.
+  - **Push artifact to Nexus Repository** for artifact storage and versioning.
   - **Send Email Notifications** on pipeline status (success/failure) including detailed logs and reports.
+
 - **ArgoCD Automates Deployment** into AWS EKS.
 - **Blue-Green Deployment Strategy** ensures **seamless UI rollouts**.
 
@@ -87,13 +91,13 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 
 | **Category**                         | **Technologies Used**                                      |
 | ------------------------------------ | ---------------------------------------------------------- |
-| **Frontend Development**             | HTML, CSS, React.js (React Routers, Hooks, Axios)                              |
+| **Frontend Development**             | HTML, CSS, React.js (React Routers, Hooks, Axios)          |
 | **Backend Development**              | Node.js, Express.js, MongoDB                               |
 | **Infrastructure as Code**           | Terraform (AWS EKS, VPC, EC2)                              |
 | **Configuration Management**         | Ansible (EC2, Jenkins, SonarQube, Nexus, Monitoring Tools) |
 | **CI/CD & GitOps**                   | Jenkins, ArgoCD, SonarQube, Nexus Repository, Trivy        |
 | **Containerization & Orchestration** | Docker, Kubernetes (AWS EKS)                               |
-| **Monitoring & Logging**             | Prometheus and Grafana             |
+| **Monitoring & Logging**             | Prometheus and Grafana                                     |
 | **Security & Backup**                | Trivy (Security Scanning), Percona Backup (MongoDB to S3)  |
 
 ---
@@ -116,7 +120,7 @@ This project consists of multiple repositories:
 ### **1️⃣ Clone the Main Repository**
 
 ```bash
-git clone https://github.com/your-username/infra-setup.git
+git clone https://github.com/Vikas-Prince/Full-Stack-Infra-Setup.git
 cd infra-setup
 ```
 
@@ -137,12 +141,14 @@ kubectl get nodes
 ### 4️⃣ Provision EC2 Instances with Ansible
 
 ```bash
-ansible-playbook setup.yml
+ansible-playbook ec2-provision.yml
+ansible-playbook container_configuration.yml
 ```
 
 ### 5️⃣ Deploy Backend using ArgoCD
 
 ```bash
+kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
 ```
 
