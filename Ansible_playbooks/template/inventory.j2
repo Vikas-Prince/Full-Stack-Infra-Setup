@@ -1,4 +1,4 @@
-{% for ip in private_ip %}
+{% for ip in private_ips %}
 [{{ instance_names[loop.index0] }}]
 {{ ip }} ansible_user=ec2_user ansible_ssh_private_key_file=key.pem
 {% endfor %}
