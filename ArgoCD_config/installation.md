@@ -1,36 +1,16 @@
 # ArgoCD Hub-Spoke Model Setup Guide
 
+## ✅ Step 1: Install ArgoCD on the Hub Cluster
 
-## 🔧 Installing Required Tools on Amazon Linux
-
-### 1. **Install `kubectl` (Kubernetes CLI)**
+**Install `kubectl` (Kubernetes CLI)**
 
 To install `kubectl` on Amazon Linux:
+
 ```bash
 curl -LO "https://dl.k8s.io/release/v1.24.6/bin/linux/amd64/kubectl"
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 ```
-
-
-### 2. **Install `eksctl` (EKS CLI Tool)**
-To install `eksctl` run the following:
-
-```bash
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/v0.106.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
-sudo mv /tmp/eksctl /usr/local/bin
-```
-
-### 3. **Install `ArgoCD CLI` **
-To install the ArgoCD CLI, run the following commands:
-```bash
-curl -sSL -o /tmp/argocd https://github.com/argoproj/argo-cd/releases/download/v2.6.3/argocd-linux-amd64
-chmod +x /tmp/argocd
-sudo mv /tmp/argocd /usr/local/bin/argocd
-```
-
-
-## ✅ Step 1: Install ArgoCD on the Hub Cluster
 
 Let’s assume the staging cluster is the hub. First, switch context to the staging cluster:
 
@@ -88,31 +68,53 @@ kubectl get svc -n argocd
 Look for argocd-server:
 
 ```bash
-NAME                 TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)
+NAME                 TYPE           CLUSTER-IP       EXTERNAL-IP    
 argocd-server        LoadBalancer   10.100.200.21     < DNS >        
 ```
 
-## 🔐 Step 3: Retrieve & Modify ArgoCD Admin Password
-### 3.1: Get the Initial Admin Password
+## 🔐 Step 3: Retrieve ArgoCD Admin Password
+### Get the Initial Admin Password
 ```bash
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
 ```
 Save this password for the first login.
 
 ## 🌍 Step 4: Add Spoke Clusters to ArgoCD
+
+### 4.1 **Install `ArgoCD CLI`**
+To install the ArgoCD CLI, run the following commands:
+
+```bash
+curl -sSL -o /tmp/argocd https://github.com/argoproj/argo-cd/releases/download/v2.6.3/argocd-linux-amd64
+chmod +x /tmp/argocd
+sudo mv /tmp/argocd /usr/local/bin/argocd
+```
+
+### 4.2 Login to ArgoCD via CLI
+
+Use the ArgoCD CLI to log in:
+
+```bash
+argocd login <ARGOCD_SERVER_IP> --username admin --password <initial-admin-password>
+```
+Replace `<ARGOCD_SERVER_IP>` with the External IP of the ArgoCD server obtained in
+
+- **ARGOCD_SERVER_IP**: The external IP or domain name of the ArgoCD server.
+- **initial-admin-password**: The password you retrieved in the previous step.
+
 Now, add prod clusters to the hub cluster (staging).
 
-### 4.1: Get Dev and Prod cluster contexts
+### 4.3: Get Dev and Prod cluster contexts
 ```bash
 kubectl config get-contexts
 ```
 
-### 4.2 Register Spoke Clusters in ArgoCD
+### 4.4 Register Spoke Clusters in ArgoCD
 ```bash
 argocd cluster add <prod-context-name> <argoCD-server-url>
 ```
 
-### 4.3: Verify the Clusters Are Added
+### 4.5: Verify the Clusters Are Added
 ```bash
 argocd cluster list
 ```
@@ -123,8 +125,7 @@ https://staging-cluster         in-cluster   Successful
 https://prod-cluster            prod-cluster Successful
 ```
 
-
-## Automate Sync via GitHub Webhook
+## Step5: Automate Sync via GitHub Webhook
 
 To automate synchronization of your applications with GitHub, set up a webhook in your GitHub repository:
 
