@@ -6,25 +6,27 @@ This project is a **cloud-native, full-stack application** designed for **high a
 
 The architecture integrates:
 
-- **Full-Stack Development** → **React.js (Frontend), Node.js (Backend), and MongoDB (Database)**
-- **Infrastructure as Code (IaC)** → **Terraform for AWS provisioning, Ansible for EC2 configuration**
+- **Full-Stack Development** → **React.js (Frontend), Node.js (Backend), and MongoDB (Database - sharded cluster)**
+- **Multi-Environment Setup & Infrastructure as Code (IaC)** → **Terraform Workspaces for environment segregation and remote backend for state management, along with Terraform used for AWS provisioning and Ansible for EC2 configuration, ensuring consistent and automated infrastructure deployment across multiple environments.**
 - **CI/CD & GitOps** → **Jenkins, SonarQube, Nexus Repository, and ArgoCD for automated deployments**
-- **Monitoring & Security** → **Prometheus, Grafana, Trivy (Security Scanning)**
-- **Database Administration** → **MongoDB Sharded Cluster with Percona Backup for disaster recovery**
+- **Centralized ArgoCD Deployment** → **Implemented a hub-spoke model with ArgoCD deployed in the staging cluster as the hub, managing deployments for the production cluster (spoke) efficiently**
+- **Centralized Monitoring & Service Discovery** → **Prometheus stack deployed on the hub cluster (staging) to scrape metrics from all other clusters, ensuring unified monitoring and observability**
+- **Alert Management** → **Configured Alertmanager to handle and route alerts from Prometheus for better incident response**
+- **Ingress Configuration** → **All services, including ArgoCD and the monitoring stack, are exposed using Ingress rules for secure and controlled access**
 
 This repository (**infra-setup**) serves as the **central hub** for infrastructure provisioning, automation, and configuration.
 
 ---
 
-## ✨ Key Features
+## 📌 **Repository Structure & Links**
 
-✅ **Cloud-Native & Scalable Architecture** – Deployed on **AWS EKS** using **Kubernetes**  
-✅ **Automated Infrastructure Setup** – Terraform for provisioning **AWS VPC and EKS**  
-✅ **Configuration Management** – Ansible for **EC2 setup (Jenkins, SonarQube, Nexus, Prometheus, Grafana)**  
-✅ **GitOps-Based CI/CD** – Jenkins for **continuous integration** and ArgoCD for **continuous deployment**  
-✅ **Database Administration** – **MongoDB Sharded Cluster** with **Percona Backup (AWS S3 Storage)**  
-✅ **Deployment Strategies** – **Canary (Backend) & Blue-Green (Frontend) for Zero Downtime Deployments**  
-✅ **Observability & Security** – **Prometheus, Grafana, AWS CloudWatch, and Trivy (Container Security Scanning)**
+This project consists of multiple repositories:
+
+- **[🔗 Infra-Setup (Main)](https://github.com/Vikas-Prince/Full-Stack-Infra-Setup)** _(This Repository)_
+- **[🔗 MongoDB Repository](https://github.com/Vikas-Prince/mongo-sharded-cluster-on-k8s)** _(mongoDB sharded cluster on eks)_
+- **[🔗 Backend Repository](https://github.com/Vikas-Prince/food-Delivery-Backend-Node)** _(Node.js APIs, MongoDB)_
+- **[🔗 Frontend Repository](https://github.com/Vikas-Prince/food-Delivery-Frontend-React)** _(React.js UI)_
+- **[🔗 GitOps Repository](https://github.com/Vikas-Prince/food-Delivery-GitOps)** _(ArgoCD, GitOps Automation)_
 
 ---
 
@@ -99,19 +101,6 @@ This is the **end-to-end workflow** that powers the entire system, from **provis
 
 ---
 
-## 📌 **Repository Structure & Links**
-
-This project consists of multiple repositories:
-
-- **[🔗 Infra-Setup (Main)](https://github.com/Vikas-Prince/Full-Stack-Infra-Setup)** _(This Repository)_
-- **[🔗 Monitoring Repository](https://github.com/Vikas-Prince/mongo-sharded-cluster-on-k8s)** _(mongoDB sharded cluster on eks)_
-- **[🔗 Backend Repository](https://github.com/Vikas-Prince/food-Delivery-Backend-Node)** _(Node.js APIs, MongoDB)_
-- **[🔗 Frontend Repository](https://github.com/Vikas-Prince/food-Delivery-Frontend-React)** _(React.js UI)_
-- **[🔗 GitOps Repository](https://github.com/Vikas-Prince/food-Delivery-GitOps)** _(ArgoCD, GitOps Automation)_
-- **[🔗 Monitoring Repository](https://github.com/your-username/monitoring-repo)** _(Prometheus, Grafana, Fluentd)_
-
----
-
 ## 🔧 **Setup & Installation**
 
 ### **1️⃣ Clone the Main Repository**
@@ -142,20 +131,15 @@ ansible-playbook ec2-provision.yml
 ansible-playbook container_configuration.yml
 ```
 
-### 5️⃣ Deploy Backend using ArgoCD
-
-```bash
-kubectl create ns argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-```
-
 ## 🏁 **Conclusion**
 
-This **Full-Stack Development & DevOps Automation** project demonstrates the integration of **modern cloud-native technologies** with **DevOps best practices** to build a scalable, highly available, and automated application. By leveraging **AWS EKS**, **Terraform**, **Jenkins**, **ArgoCD**, and **Prometheus**, this project ensures **continuous integration, continuous deployment**, and **zero-downtime rollouts**.
+This **Full-Stack Development & DevOps Automation** project showcases the integration of **cloud-native technologies** and **DevOps best practices** to build a scalable, highly available, and automated application. By leveraging **AWS EKS**, **Terraform**, **Jenkins**, **ArgoCD**, and **Prometheus**, the project ensures **continuous integration**, **continuous deployment**, and **zero-downtime rollouts**.
 
-With automated **infrastructure provisioning** and **CI/CD pipelines**, the entire system is designed for seamless deployment, monitoring, and scaling. The use of **MongoDB Sharded Clusters** and **Percona backups** ensures data availability and disaster recovery, while **security scanning** with **Trivy** ensures the safety of the system.
+With **automated infrastructure provisioning**, **CI/CD pipelines**, and **multi-cluster monitoring** through **Federated Prometheus**, the system is designed for seamless deployment, scaling, and monitoring. **MongoDB Sharded Clusters** with **Percona backups** provide data availability and disaster recovery, while **Trivy** ensures security with container scanning.
 
-This project provides a comprehensive understanding of full-stack development, **cloud architecture**, **DevOps practices**, and **container orchestration** with Kubernetes, making it a valuable solution for modern application development and deployment workflows.
+This solution also incorporates **ArgoCD as a centralized GitOps hub**, **Ingress for external exposure**, and comprehensive **alerting** to streamline deployment and operational workflows, offering a modern, fully automated cloud-native solution.
+
+For more details, feel free to explore the repositories linked above. Happy coding! 🚀
 
 ---
 
