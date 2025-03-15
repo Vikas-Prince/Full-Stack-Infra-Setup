@@ -55,11 +55,13 @@ argocd-server-6bbf8c8d7-k7jxr                      1/1     Running   0          
 ## 🔧 Step 2: Expose ArgoCD via LoadBalancer
 By default, ArgoCD runs as a ClusterIP service. To access it externally, change it to a LoadBalancer.
 
-### 2.1: Patch the ArgoCD Service
+### 2.1: Patch the ArgoCD Service (optional and not recommended)
 
 ```bash
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
+
+  - **I created an Ingress rule for this, which includes monitoring resources as well, using path-based routing. Refer to that Ingress configuration for accessing Prometheus, Grafana, Alertmanager, and ArgoCD. Initially, I exposed ArgoCD via a LoadBalancer; however, it is now accessible through the Ingress setup**
 
 ### 2.2: Get the External DNS
 ```bash
