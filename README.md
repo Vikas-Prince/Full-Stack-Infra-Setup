@@ -7,7 +7,8 @@ This project is a **cloud-native, full-stack application** designed for **high a
 The architecture integrates:
 
 - **Full-Stack Development** → **React.js (Frontend), Node.js (Backend), and MongoDB (Database - sharded cluster)**
-- **Multi-Environment Setup & Infrastructure as Code (IaC)** → **Terraform Workspaces for environment segregation and remote backend for state management, along with Terraform used for AWS provisioning and Ansible for EC2 configuration, ensuring consistent and automated infrastructure deployment across multiple environments.**
+- **Multi-Environment Setup & Infrastructure as Code (IaC)** → **Terraform Workspaces for environment segregation and remote backend for state management, along with Terraform used for AWS provisioning**
+-  **Configuraion Management** → **Ansible for EC2 configuration, ensuring consistent and automated infrastructure deployment across multiple environments.**
 - **CI/CD & GitOps** → **Jenkins, SonarQube, Nexus Repository, and ArgoCD for automated deployments**
 - **Centralized ArgoCD Deployment** → **Implemented a hub-spoke model with ArgoCD deployed in the staging cluster as the hub, managing deployments for the production cluster (spoke) efficiently**
 - **Centralized Monitoring & Service Discovery** → **Prometheus stack deployed on the hub cluster (staging) to scrape metrics from all other clusters, ensuring unified monitoring and observability**
@@ -24,9 +25,9 @@ This project consists of multiple repositories:
 
 - **[🔗 Infra-Setup (Main)](https://github.com/Vikas-Prince/Full-Stack-Infra-Setup)** _(This Repository)_
 - **[🔗 MongoDB Repository](https://github.com/Vikas-Prince/mongo-sharded-cluster-on-k8s)** _(mongoDB sharded cluster on eks)_
-- **[🔗 Backend Repository](https://github.com/Vikas-Prince/food-Delivery-Backend-Node)** _(Node.js APIs, MongoDB)_
-- **[🔗 Frontend Repository](https://github.com/Vikas-Prince/food-Delivery-Frontend-React)** _(React.js UI)_
-- **[🔗 GitOps Repository](https://github.com/Vikas-Prince/food-Delivery-GitOps)** _(ArgoCD, GitOps Automation)_
+- **[🔗 Backend Repository](https://github.com/Vikas-Prince/full-stack-Backend-Node)** _(Node.js APIs, MongoDB)_
+- **[🔗 Frontend Repository](https://github.com/Vikas-Prince/full-stack-Frontend-React)** _(React.js UI)_
+- **[🔗 GitOps Repository](https://github.com/Vikas-Prince/full-stack-GitOps)** _(ArgoCD, GitOps Automation)_
 
 ---
 
@@ -135,12 +136,11 @@ ansible-playbook container_configuration.yml
 
 This **Full-Stack Development & DevOps Automation** project showcases the integration of **cloud-native technologies** and **DevOps best practices** to build a scalable, highly available, and automated application. By leveraging **AWS EKS**, **Terraform**, **Jenkins**, **ArgoCD**, and **Prometheus**, the project ensures **continuous integration**, **continuous deployment**, and **zero-downtime rollouts**.
 
-With **automated infrastructure provisioning**, **CI/CD pipelines**, and **multi-cluster monitoring** through **Federated Prometheus**, the system is designed for seamless deployment, scaling, and monitoring. **MongoDB Sharded Clusters** with **Percona backups** provide data availability and disaster recovery, while **Trivy** ensures security with container scanning.
+With **automated infrastructure provisioning**, **CI/CD pipelines**, and **monitoring through service discovery**, the system is designed for seamless deployment, scaling, and observability. **MongoDB Sharded Clusters** ensure data availability and disaster recovery, while **Trivy** ensures security through container scanning.
 
-This solution also incorporates **ArgoCD as a centralized GitOps hub**, **Ingress for external exposure**, and comprehensive **alerting** to streamline deployment and operational workflows, offering a modern, fully automated cloud-native solution.
-
-For more details, feel free to explore the repositories linked above. Happy coding! 🚀
+This solution also integrates **ArgoCD as a centralized GitOps hub**, **Ingress for external exposure**, and comprehensive **alerting** to streamline deployment and operational workflows, offering a modern, fully automated cloud-native solution.
 
 ---
 
 For more details, feel free to explore the repositories linked above. Happy coding! 🚀
+
