@@ -1,12 +1,12 @@
-# **Prometheus Federation Setup for Multi-Cluster EKS**
+# **Prometheus Service Discovery Setup for Multi-Cluster EKS**
 
 ## **Overview**
-This guide provides a detailed step-by-step setup of **Prometheus Federation** for a multi-cluster **EKS** environment. The **staging cluster** will serve as the central monitoring hub, collecting metrics from the **prod cluster** using Prometheus Federation.
+This guide provides a detailed step-by-step setup of **Prometheus Service Discovery** for a multi-cluster **EKS** environment. The **staging cluster** will serve as the central monitoring hub, collecting metrics from the **prod cluster** using Prometheus Federation.
 
 ## **Architecture**
 - **Staging Cluster (Hub)** → Runs **Prometheus, Grafana, and Alertmanager** for centralized monitoring.
 - **Prod Cluster (Spoke)** → Exposes **kube-state-metrics & node-exporter** for Prometheus in **staging** to scrape.
-- **Prometheus Federation** → Staging pulls metrics from **prod** using `additionalScrapeConfigs`.
+- **Prometheus service discovery** → Staging pulls metrics from **prod** using `additionalScrapeConfigs`.
 
 ---
 
@@ -133,7 +133,7 @@ http://<your-ingress-domain>/alertmanager
 ## **Conclusion**
 🔹 **Prod cluster** exposes metrics via **kube-state-metrics & node-exporter**.  
 🔹 **Staging cluster** runs **Prometheus, Grafana, and Alertmanager**.  
-🔹 **Prometheus Federation** pulls metrics from **prod**.  
+🔹 **Prometheus Service Discovery** pulls metrics from **prod**.  
 🔹 **Grafana dashboards** provide centralized monitoring.  
 🔹 **Alertmanager in staging** handles all alerts using **Gmail SMTP**.  
 🔹 **Ingress** is used for exposing Prometheus, Grafana, and Alertmanager instead of LoadBalancer.  
