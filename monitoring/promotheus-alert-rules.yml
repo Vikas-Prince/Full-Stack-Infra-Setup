@@ -1,0 +1,45 @@
+groups:
+  - name: node.rules
+    rules:
+      # 🔴 Critical CPU Usage Alert for PROD
+      - alert: HighCPUUsage
+        expr: (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle", cluster="prod"}[5m])) * 100)) > 85
+        for: 2m
+        labels:
+          severity: critical
+          cluster: prod
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }} (Prod)"
+          description: "CPU usage is above 85% for more than 2 minutes on {{ $labels.instance }} in Production."
+
+      # 🟠 Warning CPU Usage Alert for DEV
+      - alert: HighCPUUsage
+        expr: (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle", cluster="dev"}[5m])) * 100)) > 70
+        for: 2m
+        labels:
+          severity: warning
+          cluster: dev
+        annotations:
+          summary: "Moderate CPU usage on {{ $labels.instance }} (Dev)"
+          description: "CPU usage is above 70% for more than 2 minutes on {{ $labels.instance }} in Development."
+
+      # 🔴 Memory Usage Alert for PROD
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemAvailable_bytes{cluster="prod"} / node_memory_MemTotal_bytes{cluster="prod"} * 100) < 10
+        for: 5m
+        labels:
+          severity: critical
+          cluster: prod
+        annotations:
+          summary: "Low Memory on {{ $labels.instance }} (Prod)"
+          description: "Available memory is less than 10% for more than 5 minutes on {{ $labels.instance }} in Production."
+
+      # 🚨 Kubelet Down Alert for Any Cluster
+      - alert: KubeletDown
+        expr: up{job="kubelet"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Kubelet Down on {{ $labels.instance }}"
+          description: "Kubelet is down for more than 5 minutes on {{ $labels.instance }} in {{ $labels.cluster }}."

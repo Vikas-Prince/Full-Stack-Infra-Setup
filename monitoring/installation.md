@@ -51,19 +51,7 @@ kubectl config use-context <staging-cluster-context>
 📌 **Where to create the file?** On local machine (where `kubectl` is configured)
 
 ```bash
-prometheus:
-  prometheusSpec:
-    additionalScrapeConfigs:
-      - job_name: "prod-cluster"
-        honor_labels: true
-        kubernetes_sd_configs:
-          - role: endpoints
-            namespaces:
-              names: ["monitoring"]
-        relabel_configs:
-          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name]
-            action: keep
-            regex: monitoring;kube-state-metrics
+[service discovery configuration](./prometheus-values.yml)
 ```
 
 ### **Deploy Prometheus Using Helm**
@@ -108,27 +96,14 @@ http://<your-ingress-domain>/grafana
 
 ### **Modify Prometheus Values File (`prometheus-values.yaml`)**
 ```bash
-alertmanager:
-  alertmanagerSpec:
-    externalUrl: "http://alertmanager.monitoring.svc:9093"
-    route:
-      receiver: "email"
-    receivers:
-      - name: "email"
-        email_configs:
-          - to: "your-email@gmail.com"
-            from: "your-gmail@gmail.com"
-            smarthost: "smtp.gmail.com:587"
-            auth_username: "your-gmail@gmail.com"
-            auth_identity: "your-gmail@gmail.com"
-            auth_password: "your-app-password"
-            send_resolved: true
+[prometheus alert rules](./promotheus-alert-rules.yml)
+[prometheus alert manager](./alertmanager-values.yml)
 ```
 
 ### **Apply Alertmanager Configuration**
 ```sh
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
-  -n monitoring -f prometheus-values.yaml
+  -n monitoring -f promotheus-alert-rules.yml alertmanager-values.yml
 ```
 
 ### **Expose Alertmanager Using Ingress**

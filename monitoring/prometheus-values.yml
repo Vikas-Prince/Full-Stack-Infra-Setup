@@ -1,0 +1,92 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
+    podMonitorNamespaceSelector: {}
+    ruleSelector: {}
+    ruleNamespaceSelector: {}
+    additionalScrapeConfigs:
+      # ========================
+      # 📌 Staging Cluster Scraping
+      # ========================
+      - job_name: "staging-kube-state-metrics"
+        honor_labels: true
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ["monitoring", "kube-system"]
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: kube-state-metrics
+
+      - job_name: "staging-node-exporter"
+        honor_labels: true
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: ["monitoring", kube-system]
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: prometheus-node-exporter
+
+      - job_name: "staging-apiserver"
+        kubernetes_sd_configs:
+          - role: endpoints
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: kubernetes
+
+      - job_name: "staging-kubelet"
+        kubernetes_sd_configs:
+          - role: node
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_node_name]
+            replacement: kubernetes.default.svc
+            target_label: instance
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+
+      # ========================
+      # 📌 Prod Cluster Scraping
+      # ========================
+      - job_name: "prod-kube-state-metrics"
+        honor_labels: true
+        kubernetes_sd_configs:
+          - role: endpoints
+            api_server: "https://prod-cluster-api-url:6443"
+            tls_config:
+              insecure_skip_verify: true
+            # bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            namespaces:
+              names: []
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: kube-state-metrics
+
+      - job_name: "prod-node-exporter"
+        honor_labels: true
+        kubernetes_sd_configs:
+          - role: endpoints
+            api_server: "https://prod-cluster-api-url:6443"
+            tls_config:
+              insecure_skip_verify: true
+            # bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            namespaces:
+              names: []
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            action: keep
+            regex: prometheus-node-exporter
+
+     
