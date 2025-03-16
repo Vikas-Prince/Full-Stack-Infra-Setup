@@ -42,5 +42,5 @@
     - debug:
         var: private_ips
     - template:
-        src: /template/inventory.j2
+        src: template/inventory.j2
         dest: inventory.ini
