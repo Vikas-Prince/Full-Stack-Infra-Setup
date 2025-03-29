@@ -10,13 +10,13 @@ resource "aws_instance" "jenkins_master" {
   
 
   tags = {
-    Name = "jenkins-master"
+    Name = var.jenkins_master_tag
   }
 }
 
 # Jenkins Slave Launch Template
 resource "aws_launch_template" "jenkins_slave_lt" {
-  name          = "jenkins-slave-lt"
+  name          = var.jenkins_slave_lt_name
   image_id      = var.jenkins_slave_ami
   instance_type = var.instance_type
 
@@ -33,14 +33,14 @@ resource "aws_launch_template" "jenkins_slave_lt" {
     resource_type = "instance"
 
     tags = {
-      Name = "jenkins-slave"
+      Name = var.jenkins_slave_lt_name
     }
   }
 }
 
 # Jenkins Slave Auto Scaling Group
 resource "aws_autoscaling_group" "jenkins_slave_asg" {
-  name                = "jenkins-slave-asg"
+  name                = var.jenkins_slave_asg_name
   max_size           = var.slave_max_size
   min_size           = var.slave_min_size
   desired_capacity   = var.slave_desired_size
@@ -53,7 +53,7 @@ resource "aws_autoscaling_group" "jenkins_slave_asg" {
 
   tag {
     key                 = "Name"
-    value               = "jenkins-slave"
+    value               = var.jenkins_slave_asg_name
     propagate_at_launch = true
   }
 }
@@ -67,7 +67,7 @@ resource "aws_instance" "nexus_server" {
   key_name               = var.key_name
 
   tags = {
-    Name = "nexus-server"
+    Name = var.nexus_server_tag
   }
 }
 
@@ -80,6 +80,6 @@ resource "aws_instance" "sonar_server" {
   key_name               = var.key_name
 
   tags = {
-    Name = "sonar-server"
+    Name = var.nexus_server_tag
   }
 }

@@ -79,6 +79,11 @@ module "ci_infra" {
   ec2_subnet_private = module.vpc.ci_cd_private_subnets
   ec2_subnet_public  = module.vpc.ci_cd_public_subnets
 
+  # Instance Names
+  jenkins_master_tag = var.jenkins_master_tag
+  nexus_server_tag = var.nexus_server_tag
+  sonar_server_tag = var.sonar_server_tag
+
   # Security Groups
   jenkins_sgp      = module.security_groups.jenkins_security_gp
   jenkins_slave_sg = module.security_groups.jenkins_slave_security_gp

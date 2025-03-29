@@ -194,3 +194,41 @@ variable "slave_max_size" {
   default = 3
 }
 
+
+
+variable "jenkins_slave_lt_name" {
+  description = "Name of Jenkins slave launch template"
+  type        = string
+  default     = "jenkins-slave-lt"
+}
+
+variable "jenkins_slave_asg_name" {
+  description = "Name of Jenkins slave Auto Scaling Group"
+  type        = string
+  default     = "jenkins-slave-asg"
+}
+
+variable "jenkins_master_tag" {
+  description = "Tag for Jenkins master instance"
+  type        = string
+  default     = "jenkins-master"
+}
+
+variable "jenkins_slave_tag" {
+  description = "Tag for Jenkins slave instances"
+  type        = string
+  default     = "jenkins-slave"
+}
+
+variable "nexus_server_tag" {
+  description = "Tag for Nexus server instance"
+  type        = string
+  default     = "nexus-server"
+}
+
+variable "sonar_server_tag" {
+  description = "Tag for SonarQube server instance"
+  type        = string
+  default     = "sonar-server"
+}
+
